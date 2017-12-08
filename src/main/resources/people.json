@@ -1,3 +1,7 @@
-{"name":"Michael"}
+{"name":"Michael","favorite_fruit":"banana"}
+{"name":"LiNa","age":25,"favorite_fruit":"tangerine"}
 {"name":"Andy", "age":30}
-{"name":"Justin", "age":19}
+{"name":"Justin", "age":19,"favorite_fruit":"banana"}
+{"name":"Bell", "age":19,"favorite_fruit":"apple"}
+{"name":"Bell", "age":20,"favorite_fruit":"apple"}
+{"name":"Julia", "age":19,"favorite_fruit":"watermelon"}

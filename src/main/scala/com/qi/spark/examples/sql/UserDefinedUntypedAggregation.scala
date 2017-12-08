@@ -1,8 +1,8 @@
-package com.qi.spark.examples
+package com.qi.spark.examples.sql
 
-import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.expressions.{MutableAggregationBuffer, UserDefinedAggregateFunction}
 import org.apache.spark.sql.types._
+import org.apache.spark.sql.{Row, SparkSession}
 
 object UserDefinedUntypedAggregation {
 

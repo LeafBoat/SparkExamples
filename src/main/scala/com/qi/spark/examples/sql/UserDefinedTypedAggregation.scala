@@ -1,4 +1,4 @@
-package com.qi.spark.examples
+package com.qi.spark.examples.sql
 
 import org.apache.spark.sql._
 import org.apache.spark.sql.expressions.Aggregator
