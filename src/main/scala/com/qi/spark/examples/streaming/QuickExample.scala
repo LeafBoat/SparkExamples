@@ -1,28 +1,26 @@
 package com.qi.spark.examples.streaming
 
 import org.apache.spark.SparkConf
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.dstream.{DStream, ReceiverInputDStream}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 
 object QuickExample {
+
   def main(args: Array[String]): Unit = {
-    //local[2]表示创建两个本地线程
-    // Create a local StreamingContext with two working thread and batch interval of 1 second.
-    // The master requires 2 cores to prevent from a starvation scenario.
-    val sparkConf: SparkConf = new SparkConf().setMaster("local[2]").setAppName("NetworkWordCount")
-    val streamingContext = new StreamingContext(sparkConf, Seconds(1))
-    // Create a DStream that will connect to hostname:port, like localhost:9999
-    val lines: ReceiverInputDStream[String] = streamingContext.socketTextStream("localhost", 9999)
-    // Split each line into words
-    val words: DStream[String] = lines.flatMap(_.split(" "))
+    if (args.length < 2) {
+      System.err.print("请添加产生数据源的主机及其端口")
+      System.exit(1)
+    }
 
-    val wordMaps: DStream[(String, Int)] = words.map(word => (word, 1))
-    val wordCounts: DStream[(String, Int)] = wordMaps.reduceByKey(_ + _)
-
-    wordCounts.count()
-
-    streamingContext.start()
-    streamingContext.awaitTermination()
-    streamingContext.stop()
+    val sparkConf = new SparkConf().setAppName("network worldcount")
+    val scc = new StreamingContext(sparkConf, Seconds(2))
+    val receiverInputDStream: ReceiverInputDStream[String] = scc.socketTextStream(args(0), args(1).toInt, StorageLevel.MEMORY_AND_DISK)
+    val dstream: DStream[String] = receiverInputDStream.flatMap(_.split(" "))
+    val word_lable = dstream.map(k => (k, 1))
+    val word_count: DStream[(String, Int)] = word_lable.reduceByKey((a, b) => a + b)
+    word_count.print()
+    scc.start()
+    scc.awaitTermination()
   }
 }
